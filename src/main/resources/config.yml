@@ -1,0 +1,39 @@
+# -- Chance Section --
+#Chance that the text will obfuscated (max of 100/100%, 0 turns this off)
+obfuscate-chance: 10
+#This number is put under 10, and that is the chance you will get a book from grass, for example 1000 is 10/1000 or 1/100(1%)
+grass-break-chance: 100
+#This number is put over 10000, and that is the chance a zombie will drop a book(not from spawners) default 10/10000 or 0.1%
+zombie-drop-chance: 10
+#This number is put over 1000, and that is the chance you will hook a book
+fish-drop-chance: 10
+# -- Text Section --
+#This will be what appears to the player, replaces %brewRecipeName% with whatever is the brew.
+brew-name-text:
+  - "Whew, this ones a doozy, I call it %brewRecipeName%!"
+  - "This is the ancient %brewRecipeName% recipe that has been passed down in my clan for generations..."
+  - "Careful, this one is strong, I call it %brewRecipeName%."
+  - "Just threw some stuff together, tastes good, think i'll call it %brewRecipeName%..."
+
+#This will be what appears to the player, replaces %brewCooking% with the random brew's cooking time.
+brew-cooking-text:
+  - "Make sure you put it in for %brewCooking%. No more, no less."
+  - "Well, I usually put it on for %brewCooking%, that seems to be best."
+  - "Remember: %brewCooking%, this is important!"
+
+#This will be what appears to the player, replaces %brewDistillRuns% with the amount of times you have to distill the random brew.
+brew-distil-text:
+  - "It has to be distilled %brewDistillRuns%."
+  - "Distilling %brewDistillRuns% gives it the best kick!"
+  - "%brewDistillRuns%. Trust me. I think?"
+
+#This will be what appears to the player, replaces %brewWoodType% with whatever is the brew's prefered wood type, if there is any.
+brew-wood-text:
+  - "I always put it in Ma's trusty %brewWoodType% barrel."
+  - "The forests enrich this brew, make sure to use a %brewWoodType% barrel."
+  - "My experiments lead to a %brewWoodType% barrel being the most efficient..."
+
+#This will be what appears to the player, will appear if the brew needs to age.
+brew-age-text:
+  - "Let it sit for a while, trust me it's worth it"
+  - "Leave it for a bit, it needs time to rest"

@@ -1,0 +1,12 @@
+name: BreweryDistributor
+version: '1.0'
+main: fd.breweryDistributor.BreweryDistributor
+api-version: '1.21'
+author: FatDivision
+depend: [BreweryX]
+commands:
+  fdbrew:
+    description: Custom brewing command.
+    usage: /fdbrew give
+    permission: fdbrew.give
+    permission-message: You do not have permission to use this command.
