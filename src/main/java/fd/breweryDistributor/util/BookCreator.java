@@ -68,11 +68,11 @@ public class BookCreator {
                 + (random.nextInt(100) < insHide ? brewCookingTimeText : failText) + "\n";
 
         if(recipe.needsDistilling())
-            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? brewDistillRunsText : failText) + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) > insHide ? brewDistillRunsText : failText) + "\n";
         if(recipe.getWood() > 0)
-            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? brewWoodText : failText) + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) > insHide ? brewWoodText : failText) + "\n";
         if(recipe.needsToAge())
-            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? config.getRandomBrewNeedsAgeText() : failText) + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) > insHide ? config.getRandomBrewNeedsAgeText() : failText) + "\n";
 
 
         // Concatenate all ingredients into a single page
@@ -80,8 +80,8 @@ public class BookCreator {
         for (RecipeItem element : recipeItemList) {
             if(element.getMaterials() != null)
             {
-                String ingredientDetails = (random.nextInt(100) < ingHide ? formatMaterialName(element.getMaterials().getFirst()) : failIngText)
-                        + " x" + (random.nextInt(100) < ingHide ? element.getAmount() : failIngText );
+                String ingredientDetails = (random.nextInt(100) > ingHide ? formatMaterialName(element.getMaterials().getFirst()) : failIngText)
+                        + " x" + (random.nextInt(100) > ingHide ? element.getAmount() : failIngText );
                 ingredientsPage.append(ingredientDetails).append("\n");
             }
         }
