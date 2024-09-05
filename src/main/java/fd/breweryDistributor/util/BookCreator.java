@@ -64,8 +64,8 @@ public class BookCreator {
         int insHide = config.getHideInstructionChance();
         int ingHide = config.getHideIngredientChance();
 
-        String brewDetailsPage = (random.nextInt(100) < insHide ? brewRecipeNameText : failText) + "\n"
-                + (random.nextInt(100) < insHide ? brewCookingTimeText : failText) + "\n";
+        String brewDetailsPage = (random.nextInt(100) > insHide ? brewRecipeNameText : failText) + "\n"
+                + (random.nextInt(100) > insHide ? brewCookingTimeText : failText) + "\n";
 
         if(recipe.needsDistilling())
             brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) > insHide ? brewDistillRunsText : failText) + "\n";
