@@ -1,6 +1,7 @@
 package fd.breweryDistributor;
 
 import com.dre.brewery.recipe.BRecipe;
+import fd.breweryDistributor.handlers.PassedEvent;
 import fd.breweryDistributor.handlers.PlayerDiscovery;
 import fd.breweryDistributor.util.BookCreator;
 import fd.breweryDistributor.util.ConfigUtil;
@@ -70,7 +71,7 @@ public final class BreweryDistributor extends JavaPlugin {
             // Check if the subcommand is "give"
             if (args.length > 0 && args[0].equalsIgnoreCase("give")) {
                 // Call the custom function to give an item
-                ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)));
+                ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.COMMAND);
                 player.getInventory().addItem(drop);
                 return true;
             }

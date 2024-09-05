@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.Bukkit;
-import fd.breweryDistributor.util.ConfigUtil;
+import fd.breweryDistributor.handlers.PassedEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +19,32 @@ public class BookCreator {
     private static final Logger logger = Bukkit.getLogger();
     private static final Random random = new Random();
     private static final List<String> woodTypes = List.of("any", "Birch", "Oak", "Jungle", "Spruce", "Acacia", "Dark Oak", "Crimson", "Warped", "Mangrove", "Cherry", "Bamboo");;
-    public static ItemStack createBookOfIngredients(BRecipe recipe) {
+    public static ItemStack createBookOfIngredients(BRecipe recipe, PassedEvent event) {
         ConfigUtil config = ConfigUtil.instance;
         List<RecipeItem> recipeItemList = recipe.getIngredients();
         List<String> pages = new ArrayList<>();
+
+        String failText = "";
+        String failIngText = "....";
+
+        switch (event) {
+            case COMMAND:
+                failText = "Command Spawned";
+                break;
+            case FISH:
+                failText = config.getRandomFishText();
+                break;
+            case BREAK:
+                failText = config.getRandomBreakText();
+                break;
+            case ZOMBIE:
+                failText = config.getRandomZombieText();
+                break;
+            default:
+                logger.severe("Error occured in allocating fail text, bad Enum passed");
+                break;
+        }
+
 
         // Format the brew details
         String brewName = recipe.getDrinkTitle();
@@ -39,23 +61,27 @@ public class BookCreator {
         String brewDistillRunsText = config.getRandomBrewDistilText().replace("%brewDistillRuns%", brewDistillRuns);
         String brewWoodText = config.getRandomBrewWoodText().replace("%brewWoodType%", brewWood);
 
-        String brewDetailsPage = brewRecipeNameText + "\n"
-                + brewCookingTimeText + "\n";
+        int insHide = config.getHideInstructionChance();
+        int ingHide = config.getHideIngredientChance();
 
+        String brewDetailsPage = (random.nextInt(100) < insHide ? brewRecipeNameText : failText) + "\n"
+                + (random.nextInt(100) < insHide ? brewCookingTimeText : failText) + "\n";
 
         if(recipe.needsDistilling())
-            brewDetailsPage = brewDetailsPage + brewDistillRunsText + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? brewDistillRunsText : failText) + "\n";
         if(recipe.getWood() > 0)
-            brewDetailsPage = brewDetailsPage + brewWoodText + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? brewWoodText : failText) + "\n";
         if(recipe.needsToAge())
-            brewDetailsPage = brewDetailsPage + config.getRandomBrewNeedsAgeText() + "\n";
+            brewDetailsPage = brewDetailsPage + " " + (random.nextInt(100) < insHide ? config.getRandomBrewNeedsAgeText() : failText) + "\n";
+
 
         // Concatenate all ingredients into a single page
         StringBuilder ingredientsPage = new StringBuilder();
         for (RecipeItem element : recipeItemList) {
             if(element.getMaterials() != null)
             {
-                String ingredientDetails = formatMaterialName(element.getMaterials().getFirst()) + " x" + element.getAmount();
+                String ingredientDetails = (random.nextInt(100) < ingHide ? formatMaterialName(element.getMaterials().getFirst()) : failIngText)
+                        + " x" + (random.nextInt(100) < ingHide ? element.getAmount() : failIngText );
                 ingredientsPage.append(ingredientDetails).append("\n");
             }
         }
@@ -65,12 +91,12 @@ public class BookCreator {
         {
             String brewDetailsPage2 = brewDetailsPage.substring(250);
             brewDetailsPage = brewDetailsPage.substring(0, 250);
-            pages.add(obfuscate(brewDetailsPage));
-            pages.add(obfuscate(brewDetailsPage2));
+            pages.add(brewDetailsPage);
+            pages.add(brewDetailsPage2);
             pages.add(obfuscate(ingredientsPage.toString()));
         }
         else {
-            pages.add(obfuscate(brewDetailsPage));
+            pages.add(brewDetailsPage);
             pages.add(obfuscate(ingredientsPage.toString()));
         }
 

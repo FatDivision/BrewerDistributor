@@ -7,6 +7,11 @@ grass-break-chance: 100
 zombie-drop-chance: 10
 #This number is put over 1000, and that is the chance you will hook a book
 fish-drop-chance: 10
+#Chance that a generated ingredient will be hidden, i.e. "Wheat x3" to ".... x3"
+hide-ingredient-chance: 20
+#Chance that a generated instruction will be hidden, i.e. "brew-name-text" to "fish-text"
+hide-instruction-chance: 10
+
 # -- Text Section --
 #This will be what appears to the player, replaces %brewRecipeName% with whatever is the brew.
 brew-name-text:
@@ -37,3 +42,17 @@ brew-wood-text:
 brew-age-text:
   - "Let it sit for a while, trust me it's worth it"
   - "Leave it for a bit, it needs time to rest"
+
+#These are texts that will appear to the player when an ingredient is obscured, they are named accordingly
+zombie-text:
+  - "§o*This part seems to have been eaten*§r"
+  - "§o*this part is illegible*§r"
+  - "§o*the page has a tear here*§r"
+break-text:
+  - "§o*dirt covers this part*§r"
+  - "§o*this part is covered in mold...*§r"
+  - "§o*this part is illegible*§r"
+fish-text:
+  - "§o*the ink seems splotched*§r"
+  - "§o*this part is illegible*§r"
+  - "§o*text was here, but its covered by slime*§r"

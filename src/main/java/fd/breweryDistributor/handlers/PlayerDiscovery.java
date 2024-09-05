@@ -3,7 +3,9 @@ package fd.breweryDistributor.handlers;
 import fd.breweryDistributor.util.BookCreator;
 import fd.breweryDistributor.util.ConfigUtil;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -26,7 +28,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-
+;
 
 
 
@@ -44,7 +46,7 @@ public class PlayerDiscovery implements Listener {
 
         if (blockType == Material.TALL_GRASS || blockType ==  Material.SHORT_GRASS || blockType == Material.SNOW) {
             ConfigUtil config = ConfigUtil.instance;
-            ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)));
+            ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.BREAK);
 
             int chance = random.nextInt(config.getGrassBreakChance());
 
@@ -93,7 +95,7 @@ public class PlayerDiscovery implements Listener {
                     int chance = config.getZombieDropChance();
 
                     if (random.nextInt(10000) < chance) {
-                        ItemStack customDrop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)));
+                        ItemStack customDrop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.ZOMBIE);
                         event.getDrops().add(customDrop);
                     }
                 }
@@ -108,20 +110,24 @@ public class PlayerDiscovery implements Listener {
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         // Check if the event is related to catching a fish or other item
-        if (event.getState() == State.CAUGHT_FISH || event.getState() == State.CAUGHT_ENTITY) {
+        if (event.getState() == State.CAUGHT_FISH) {
             // Determine the chance of hooking a special item
             Random random = new Random();
             ConfigUtil config = ConfigUtil.instance;
             int chance = config.getFishDropChance();
 
             if (random.nextInt(100) < chance) {
-                ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)));
+                ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.FISH);
 
                 // Add the special item as a fishing drop
                 event.getCaught().getWorld().dropItemNaturally(event.getCaught().getLocation(), drop);
+                Player player = event.getPlayer();
 
-                // Optionally, send a message to the player
-                event.getPlayer().sendMessage("The rod seems to have hooked something...");
+                // Send a colored message (gold/yellow)
+                player.sendMessage(ChatColor.GOLD + "The rod seems to have hooked something...");
+
+                // Play the level-up sound at the player's location
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 0.5f);
             }
         }
     }

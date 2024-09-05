@@ -43,6 +43,7 @@ public class ConfigUtil {
         }
 
     }
+    //TODO: Needs Updating
     private boolean verify() {
         if (config.getStringList("brew-name-text").isEmpty())
         {
@@ -103,6 +104,15 @@ public class ConfigUtil {
     {
         return(config.getInt("fish-drop-chance"));
     }
+    public int getHideIngredientChance()
+    {
+        return(config.getInt("hide-ingredient-chance"));
+    }
+    public int getHideInstructionChance()
+    {
+        return(config.getInt("hide-instruction-chance"));
+    }
+
     public String getRandomBrewNameText()
     {
         List<String> possible = config.getStringList("brew-name-text");
@@ -126,6 +136,21 @@ public class ConfigUtil {
     public String getRandomBrewNeedsAgeText()
     {
         List<String> possible = config.getStringList("brew-age-text");
+        return(possible.get(random.nextInt(possible.size())));
+    }
+    public String getRandomZombieText()
+    {
+        List<String> possible = config.getStringList("zombie-text");
+        return(possible.get(random.nextInt(possible.size())));
+    }
+    public String getRandomBreakText()
+    {
+        List<String> possible = config.getStringList("break-text");
+        return(possible.get(random.nextInt(possible.size())));
+    }
+    public String getRandomFishText()
+    {
+        List<String> possible = config.getStringList("fish-text");
         return(possible.get(random.nextInt(possible.size())));
     }
 }
