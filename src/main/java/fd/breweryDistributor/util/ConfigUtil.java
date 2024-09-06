@@ -32,6 +32,11 @@ public class ConfigUtil {
         };
         instance = this;
     }
+    public boolean reload()
+    {
+        config = YamlConfiguration.loadConfiguration(file);
+        return true;
+    }
 
     public boolean save() {
         try {

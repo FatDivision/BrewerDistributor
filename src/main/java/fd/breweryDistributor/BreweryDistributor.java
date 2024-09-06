@@ -6,6 +6,7 @@ import fd.breweryDistributor.handlers.PlayerDiscovery;
 import fd.breweryDistributor.util.BookCreator;
 import fd.breweryDistributor.util.ConfigUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.Plugin;
@@ -16,6 +17,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.ObjectInputFilter;
 import java.util.Random;
 
 public final class BreweryDistributor extends JavaPlugin {
@@ -51,35 +53,56 @@ public final class BreweryDistributor extends JavaPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         // Check if the command is /fdbrew
         if (command.getName().equalsIgnoreCase("fdbrew")) {
-
-            // Ensure the sender is a player
-            if (!(sender instanceof Player)) {
-                sender.sendMessage("Only players can use this command.");
+            // Make sure the player specified a subcommand
+            if (args.length == 0) {
+                sender.sendMessage(ChatColor.RED + "Usage: /fdbrew <give|reload>");
                 return true;
             }
 
-            Player player = (Player) sender;
+            // Handle subcommands
+            switch (args[0].toLowerCase()) {
+                case "give":
+                    // Check permission
+                    if (sender instanceof Player && sender.hasPermission("fdbrew.give")) {
+                        // Ensure the sender is a player
+                        if (!(sender instanceof Player)) {
+                            sender.sendMessage("Only players can use this command.");
+                            return true;
+                        }
+                        Player player = (Player) sender;
+                        // Call the custom function to give an item
+                        ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.COMMAND);
+                        player.getInventory().addItem(drop);
+                        return true;
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                        return true;
+                    }
 
-            // Check for permissions (optional)
-            if (!player.hasPermission("fdbrew.give")) {
-                player.sendMessage("You do not have permission to use this command.");
-                return true;
+                case "reload":
+                    // Check permission for reload command
+                    if (sender.hasPermission("fdbrew.reload")) {
+                        // Reload the config
+                        reloadConfig();
+                        ConfigUtil cfg = ConfigUtil.instance;
+                        cfg.reload();
+                        sender.sendMessage(ChatColor.GREEN + "The BreweryDistributor config has been reloaded.");
+                        return true;
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                        return true;
+                    }
+
+                default:
+                    // If an invalid subcommand is provided
+                    sender.sendMessage(ChatColor.RED + "Invalid subcommand. Use /fdbrew <give|reload>.");
+                    return true;
             }
-
-            // Check if the subcommand is "give"
-            if (args.length > 0 && args[0].equalsIgnoreCase("give")) {
-                // Call the custom function to give an item
-                ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.COMMAND);
-                player.getInventory().addItem(drop);
-                return true;
-            }
-
-            // If no valid subcommand, display usage message
-            player.sendMessage("Usage: /fdbrew give");
-            return true;
         }
+
         return false;
     }
 }

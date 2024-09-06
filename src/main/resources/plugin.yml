@@ -7,6 +7,6 @@ depend: [BreweryX]
 commands:
   fdbrew:
     description: Custom brewing command.
-    usage: /fdbrew give
-    permission: fdbrew.give
+    usage: /fdbrew <subcommand>
+    permission: fdbrew.use
     permission-message: You do not have permission to use this command.
