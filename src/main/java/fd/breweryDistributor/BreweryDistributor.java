@@ -5,6 +5,7 @@ import fd.breweryDistributor.handlers.PassedEvent;
 import fd.breweryDistributor.handlers.PlayerDiscovery;
 import fd.breweryDistributor.util.BookCreator;
 import fd.breweryDistributor.util.ConfigUtil;
+import fd.breweryDistributor.util.FdUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -74,7 +75,7 @@ public final class BreweryDistributor extends JavaPlugin {
                         }
                         Player player = (Player) sender;
                         // Call the custom function to give an item
-                        ItemStack drop = BookCreator.createBookOfIngredients(BRecipe.getAllRecipes().get(random.nextInt(BRecipe.getAllRecipes().size() - 1)), PassedEvent.COMMAND);
+                        ItemStack drop = BookCreator.createBookOfIngredients(FdUtils.GetRandomRecipe(), PassedEvent.COMMAND);
                         player.getInventory().addItem(drop);
                         return true;
                     } else {

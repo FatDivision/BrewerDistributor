@@ -1,3 +1,12 @@
+# -- Blacklist --
+blacklist:
+  - "Absinthe"
+  - "Wheatbeer"
+  - "Example"
+  - "Darkbeer"
+  - "Sweet Apple Mead"
+  - "Mead"
+
 # -- Chance Section --
 #Chance that the text will obfuscated (max of 100/100%, 0 turns this off)
 obfuscate-chance: 10
@@ -56,3 +65,4 @@ fish-text:
   - "§o*the ink seems splotched*§r"
   - "§o*this part is illegible*§r"
   - "§o*text was here, but its covered by slime*§r"
+
