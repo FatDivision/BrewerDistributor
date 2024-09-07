@@ -18,7 +18,6 @@ public class FdUtils {
         List<String> bl = cfg.getConfig().getStringList("blacklist");
         if (bl.contains(recipe.getRecipeName()))
         {
-            logger.info("test");
             return GetRandomRecipe();
         }
         return recipe;

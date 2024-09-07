@@ -1,5 +1,5 @@
 name: BreweryDistributor
-version: '1.0'
+version: '1.2'
 main: fd.breweryDistributor.BreweryDistributor
 api-version: '1.21'
 author: FatDivision
